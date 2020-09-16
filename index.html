@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<head>
+    <title>COUNTRYWISE COVID TRACKER</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        h6{
+            text-align: right;
+        }
+    </style>
+  </head>
+
+  <body class="bg-info"> 
+      
+      <center> 
+        <h1>COUNTRYWISE COVID 19 DATA TRACKER</h1> 
+          <h6><a href="statewise_covid19_tracker.html" style="color:red">INDIA'S STATE WISE COVID 19 DATA TRACKER</a></h6>
+        <form action="#" onsubmit="f1()">
+          
+          <select id="countryname" name="Countryname">
+            <option value="United States of America">USA</option>
+            <option value="India">India</option>
+            <option value="Indonesia">Indonesia</option>
+            <option value="Australia">Australia</option>
+            <option value="United Kingdom">UK</option>
+            <option value="United Arab Emirates">United Arab Emirates</option>
+            <option value="China">China</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Japan">Japan</option>
+            <option value="Afghanistan">Afghanistan</option>
+            <option value="Canada">Canada</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Italy">Italy</option>
+            <option value="Netherlands">Netherlands</option>
+            <option value="Singapore">Singapore</option>
+            <option value="Switzerland">Switzerland</option>
+          </select>
+
+          <input class="btn btn-primary"type="button" value="Get Data" onclick="f1()">
+      </form>
+      <h1 ><p id="da" ></p></h1>
+<table border=1 class=" table table-striped">
+    <tr class="table-primary" ><th>Country Name</th>
+    <th>Country Code</th>
+    <th>Date</th>
+    <th>Total Confirmed Cases</th>
+    <th>Total Number of deaths</th>
+    <th>Total Number of Recovered</th>
+    
+    
+    </tr><tbody id="data">
+
+    </tbody>
+</table> </center>
+ 
+    <script>
+ 
+ function f1(){
+    var coo =document.getElementById("countryname").value;
+
+        fetch('https://api.covid19api.com/summary').then(
+            res=>{
+                res.json().then(
+                    data=>{
+                     console.log(data);
+                     if(data.Countries.length>0){
+                         var temp="";
+
+                         data.Countries.forEach((u )=>{
+                             if(u.Country==coo){
+                             temp+="<tr class='table-success'>";
+                             temp+="<td>"+u.Country+"</td>";
+
+                             temp+="<td>"+u.CountryCode+"</td>";
+                             temp+="<td>"+u.Date+"</td>";
+                            
+                             temp+="<td>"+u.TotalConfirmed+"</td>";
+                             temp+="<td>"+u.TotalDeaths+"</td>";
+                             temp+="<td>"+u.TotalRecovered+"</td>";
+                           temp+="</tr>"
+                             }
+
+                         })
+
+                        
+                         document.getElementById("data").innerHTML += temp;
+                     }
+                     document.getElementById("da").innerHTML = "Global Total : "+data.Global.TotalConfirmed+" Global Deaths : "+data.Global.TotalDeaths;
+                     document.getElementById("da").style.color="red";
+                    }
+                )
+            }
+        ) }
+    </script>
+  </body>
+</html>
